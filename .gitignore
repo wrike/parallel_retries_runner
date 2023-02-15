@@ -1,0 +1,12 @@
+#Idea files
+.idea
+*.iml
+
+#VSCode files
+.vscode
+
+#Mac files
+*.DS_Store
+
+#Maven files
+target
