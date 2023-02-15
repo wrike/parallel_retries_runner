@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.wrike</groupId>
+        <artifactId>parallel_retries_runner</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>example_project</artifactId>
+
+    <properties>
+        <allure.version>2.18.0</allure.version>
+        <maven.surefire.version>3.0.0-M7</maven.surefire.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
+        <junit.jupiter.version>5.8.2</junit.jupiter.version>
+        <runner.provider.version>1.0-SNAPSHOT</runner.provider.version>
+        <allure.runner.provider.version>1.0-SNAPSHOT</allure.runner.provider.version>
+        <retry.count>3</retry.count>
+        <thread.count>10</thread.count>
+        <retry.mode>parallel</retry.mode>
+        <retry.parallel.failed.tests.threshold>10</retry.parallel.failed.tests.threshold>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.wrike</groupId>
+                        <artifactId>runner_provider</artifactId>
+                        <version>${runner.provider.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.wrike</groupId>
+                        <artifactId>allure_runner_provider</artifactId>
+                        <version>${allure.runner.provider.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <!-- https://issues.apache.org/jira/browse/SUREFIRE-1614 -->
+                    <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
+                    <rerunFailingTestsCount>${retry.count}</rerunFailingTestsCount>
+                    <systemPropertyVariables>
+                        <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                        <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+                        <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
+                        <junit.jupiter.execution.parallel.config.strategy>fixed</junit.jupiter.execution.parallel.config.strategy>
+                        <junit.jupiter.execution.parallel.config.fixed.parallelism>${thread.count}</junit.jupiter.execution.parallel.config.fixed.parallelism>
+                        <allure.results.directory>target/allure-results</allure.results.directory>
+                        <retry.mode>${retry.mode}</retry.mode>
+                        <retry.parallel.failed.tests.threshold>${retry.parallel.failed.tests.threshold}</retry.parallel.failed.tests.threshold>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
