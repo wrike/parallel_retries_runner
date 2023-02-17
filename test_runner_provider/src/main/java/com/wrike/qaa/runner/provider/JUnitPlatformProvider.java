@@ -20,7 +20,6 @@ package com.wrike.qaa.runner.provider;
  */
 
 import com.google.common.collect.Lists;
-import com.wrike.qaa.runner.provider.util.ServiceLoaderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.maven.surefire.api.provider.AbstractProvider;
 import org.apache.maven.surefire.api.provider.ProviderParameters;
@@ -56,6 +55,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.wrike.qaa.runner.provider.RetryMode.SEQUENTIAL;
+import static com.wrike.qaa.runner.provider.util.ServiceLoaderUtil.load;
 import static java.util.Arrays.stream;
 import static java.util.Collections.emptyMap;
 import static java.util.Optional.empty;
@@ -101,7 +102,7 @@ public class JUnitPlatformProvider extends AbstractProvider {
                 parameters,
                 new LazyLauncher(),
                 new EnvironmentProvider(parameters.getTestRequest().getRerunFailingTestsCount()),
-                ServiceLoaderUtil.load(EventListener.class)
+                load(EventListener.class)
         );
     }
 
@@ -196,7 +197,7 @@ public class JUnitPlatformProvider extends AbstractProvider {
         int retriesLeft = environmentProvider.getRerunFailingTestsCount();
         try {
             while (retriesLeft > 0 && adapter.hasFailingTests()) {
-                if (RetryMode.SEQUENTIAL.equals(environmentProvider.getRetryMode())) {
+                if (SEQUENTIAL.equals(environmentProvider.getRetryMode())) {
                     notifySafely(EventListener::sequentialRetryStartedDueToModeSpecified);
                     adapter = retryTestsWithRerunAfterFailureAndGetResults(adapter, reporterFactory);
                 } else if (retriesLeft < 2) {

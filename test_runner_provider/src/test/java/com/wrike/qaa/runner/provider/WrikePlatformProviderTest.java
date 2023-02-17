@@ -7,7 +7,6 @@ import com.wrike.qaa.runner.provider.util.ExecutionRecorder;
 import com.wrike.qaa.runner.provider.util.RunResult;
 import org.apache.maven.surefire.api.testset.TestSetFailedException;
 import org.apache.maven.surefire.api.util.TestsToRun;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.engine.TestExecutionResult;
@@ -367,7 +366,7 @@ class WrikePlatformProviderTest {
                                 .collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());
-        Assertions.assertThat(expectedTestResults)
+        assertThat(expectedTestResults)
                 .as("Check test results statuses")
                 .containsExactlyInAnyOrderElementsOf(actualTestResults);
     }

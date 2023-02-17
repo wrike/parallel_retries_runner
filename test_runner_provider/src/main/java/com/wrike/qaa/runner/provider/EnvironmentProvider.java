@@ -5,6 +5,8 @@ import com.google.common.base.Suppliers;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static com.wrike.qaa.runner.provider.RetryMode.*;
+
 /**
  * Provides external properties. It's used to mock the environment in tests.
  *
@@ -23,7 +25,7 @@ class EnvironmentProvider {
     private static final String FAILED_TESTS_THRESHOLD_PROPERTY = "retry.parallel.failed.tests.threshold";
 
     private static final int DEFAULT_FAILED_TESTS_THRESHOLD = Integer.MAX_VALUE;
-    private static final RetryMode DEFAULT_RETRY_MODE = RetryMode.SEQUENTIAL;
+    private static final RetryMode DEFAULT_RETRY_MODE = SEQUENTIAL;
     private static final int DEFAULT_THREAD_COUNT = 1;
 
     private final int rerunFailingTestsCount;
@@ -59,9 +61,9 @@ class EnvironmentProvider {
         if (retryMode == null) {
             return DEFAULT_RETRY_MODE;
         }
-        return RetryMode.getRetryModeByName(retryMode)
+        return getRetryModeByName(retryMode)
                 .orElseThrow(() -> new IllegalStateException(String.format("Can not parse %s=%s to one of the following values %s",
-                        RETRY_MODE_PROPERTY, retryMode, RetryMode.getAvailableRetryModes())));
+                        RETRY_MODE_PROPERTY, retryMode, getAvailableRetryModes())));
     });
 
     private static int getIntegerPropertyOrDefault(String propertyName, int defaultValue) {
