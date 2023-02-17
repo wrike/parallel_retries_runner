@@ -10,9 +10,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>runner_provider</module>
+        <module>test_runner_provider</module>
         <module>example_project</module>
-        <module>allure_runner_provider</module>
+        <module>allure_test_runner_provider</module>
     </modules>
 
     <properties>

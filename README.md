@@ -1,20 +1,22 @@
 ## Description
 
-It's an implementation of parallel retries for Java + Maven + JUnit stack.
+It's an implementation of parallel retries for Java + Maven + JUnit 5 stack.
 
 This project contains three following modules:
 
-- **runner_provider** — provides modified JUnitPlatformProvider from [maven-surefire-plugin](https://github.com/apache/maven-surefire/),
+- **test_runner_provider** — provides modified JUnitPlatformProvider from [maven-surefire-plugin](https://github.com/apache/maven-surefire/),
 which allows you to retry tests in parallel.
-- **allure_runner_provider** — provides Allure integration for JUnitPlatformProvider.
+- **allure_test_runner_provider** — provides Allure integration for JUnitPlatformProvider.
 - **example_project** — the project with set up JUnitPlatformProvider and Allure integration.
 
 ## How to use set up parallel retries
 
-To add support for parallel retries, you need to specify **runner_provider** dependency in the dependencies
+To add support for parallel retries, you need to specify **test_runner_provider** dependency in the dependencies
 of **maven-surefire-plugin**.
 
-If you use Allure, add **allure_runner_provider** dependency. It fixes the order of parallel retries in the Allure report.
+If you use Allure, add **allure_test_runner_provider** dependency. It fixes the order of parallel retries in the Allure report.
+By default, Allure sorts results by start time. Changing the start time for not passed tests to the time when retries
+were started will guarantee that test will be marked as passed if it passed at least once.
 
 To set up retries you can specify the following configuration parameters:
 
@@ -47,13 +49,13 @@ Here you can see an example of configuration:
             <dependencies>
                 <dependency>
                     <groupId>com.wrike</groupId>
-                    <artifactId>runner_provider</artifactId>
+                    <artifactId>test_runner_provider</artifactId>
                     <version>1.0-SNAPSHOT</version>
                 </dependency>
                 <!-- add this dependency if you use allure -->
                 <dependency>
                     <groupId>com.wrike</groupId>
-                    <artifactId>allure_runner_provider</artifactId>
+                    <artifactId>allure_test_runner_provider</artifactId>
                     <version>1.0-SNAPSHOT</version>
                 </dependency>
             </dependencies>
