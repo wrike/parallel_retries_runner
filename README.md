@@ -2,6 +2,9 @@
 
 It's an implementation of parallel retries for Java + Maven + JUnit 5 stack.
 
+WARNING: Parallel retries mode ignores JUnit5 synchronisation mechanisms,
+which are set up via @Execution, @ResourceLock and @Isolated annotations.
+
 This project contains three following modules:
 
 - **test_runner_provider** — provides modified JUnitPlatformProvider from [maven-surefire-plugin](https://github.com/apache/maven-surefire/),
