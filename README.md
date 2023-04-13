@@ -12,9 +12,9 @@ which allows you to retry tests in parallel.
 - **allure_test_runner_provider** — provides Allure integration for JUnitPlatformProvider.
 - **example_project** — the project with set up JUnitPlatformProvider and Allure integration.
 
-## How to use set up parallel retries
+## How to set up parallel retries
 
-To add support for parallel retries, you need to specify **test_runner_provider** dependency in the dependencies
+To add support of parallel retries, you need to specify **test_runner_provider** dependency in the dependencies
 of **maven-surefire-plugin**.
 
 If you use Allure, add **allure_test_runner_provider** dependency. It fixes the order of parallel retries in the Allure report.
